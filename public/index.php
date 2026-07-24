@@ -7,13 +7,20 @@ require __DIR__ . '/../vendor/autoload.php';
 
 // ─────────────────────────────────────────────
 // Configuration
+// Load from config.php if it exists (gitignored).
+// Copy config.example.php to config.php and set
+// your own values. Do NOT commit config.php.
 // ─────────────────────────────────────────────
-define('API_TOKEN', 'dmmmsu-cookbook-token-2026');
-
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'filipino_cookbook_api');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+if (file_exists(__DIR__ . '/../config.php')) {
+    require __DIR__ . '/../config.php';
+} else {
+    // Fallback placeholder values — replace these in config.php
+    define('API_TOKEN', 'YOUR_API_TOKEN_HERE');
+    define('DB_HOST',   'localhost');
+    define('DB_NAME',   'filipino_cookbook_api');
+    define('DB_USER',   'YOUR_DATABASE_USERNAME');
+    define('DB_PASS',   'YOUR_DATABASE_PASSWORD');
+}
 
 // ─────────────────────────────────────────────
 // Database Connection (PDO)
