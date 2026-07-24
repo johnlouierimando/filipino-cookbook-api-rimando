@@ -1,0 +1,35 @@
+# ─────────────────────────────────────────────
+# Filipino Cookbook API — .gitignore
+# ─────────────────────────────────────────────
+
+# Composer vendor directory — excluded because classmates run "composer install" after cloning
+/vendor/
+
+# composer.lock is intentionally NOT excluded — it ensures classmates install
+# the exact same dependency versions via "composer install"
+
+# Actual configuration files containing sensitive credentials
+config.php
+.env
+.env.*
+!.env.example
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.code-workspace
+
+# PHP error logs
+error_log
+*.log
+
+# Temporary files
+/tmp/
+
+# Activity guide documents (instructor materials, not part of the API)
+*.docx
+*.doc
