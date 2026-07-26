@@ -1,6 +1,6 @@
 # Filipino Cookbook API
 
-A RESTful API for Filipino cuisine built with **PHP**, the **Slim Framework**, and **MySQL**. This API provides structured data about traditional Filipino foods, their ingredients, categories, and regional origins — secured with Bearer token authentication.
+A RESTful API for Filipino cuisine built with **PHP**, the **Slim Framework**, and **MySQL**. This API provides structured data about traditional Filipino foods, their ingredients, categories, and regional origins secured with Bearer token authentication.
 
 ---
 
@@ -96,14 +96,14 @@ filipino-cookbook-api/
 - [Git](https://git-scm.com/)
 - Thunder Client (VS Code extension) or [Postman](https://www.postman.com/)
 
-### Step 1 - Clone the Repository
+### Step 1 Clone the Repository
 
 ```bash
 git clone https://github.com/username/filipino-cookbook-api-surname.git
 cd filipino-cookbook-api-surname
 ```
 
-### Step 2 - Place in XAMPP Directory
+### Step 2 Place in XAMPP Directory
 
 Copy or move the project folder into your XAMPP `htdocs` directory:
 
@@ -111,13 +111,13 @@ Copy or move the project folder into your XAMPP `htdocs` directory:
 C:\xampp\htdocs\filipino-cookbook-api\
 ```
 
-### Step 3 - Install Dependencies
+### Step 3 Install Dependencies
 
 ```bash
 composer install
 ```
 
-### Step 4 - Create and Import the Database
+### Step 4 Create and Import the Database
 
 1. Open **phpMyAdmin** at `http://localhost/phpmyadmin`
 2. Click **Import**
@@ -130,7 +130,7 @@ Alternatively, use the MySQL command line:
 mysql -u root -p < database/filipino_foods_relational.sql
 ```
 
-### Step 5 - Configure the Database Connection
+### Step 5 Configure the Database Connection
 
 Open `public/index.php` and update the configuration constants at the top of the file:
 
@@ -145,11 +145,11 @@ define('DB_PASS', '');
 
 > **Note:** For production use, see `config.example.php` and store credentials in a separate configuration file excluded from version control.
 
-### Step 6 - Start Apache and MySQL
+### Step 6 Start Apache and MySQL
 
 Open the **XAMPP Control Panel** and start both **Apache** and **MySQL**.
 
-### Step 7 - Test the API
+### Step 7 Test the API
 
 Open Thunder Client, Postman, or your browser and navigate to:
 
