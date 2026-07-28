@@ -348,21 +348,4 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-## Optional API Enhancements
-
-This API includes the following enhancement beyond the base requirements:
-
-### Search Endpoint
-
-**Endpoint:** `GET /api/foods/search/{name}`
-
-- **Description:** Performs a partial-match search on food names using SQL `LIKE`.
-- **Purpose:** Allows users to find foods without knowing the exact full name.
-- **Files Modified:** `public/index.php`
-- **Endpoint Added:** `GET /api/foods/search/{name}`
-- **Security:** Uses prepared statements to prevent SQL injection.
-- **Testing:** Send a GET request with a food name keyword (e.g., `/api/foods/search/adobo`).
-
----
-
 *Filipino Cookbook API - Built using PHP + Slim Framework*
