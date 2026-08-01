@@ -44,6 +44,7 @@ The **Filipino Cookbook API** is a token-secured REST API that exposes a curated
 - Add a new Filipino food record (POST)
 - Delete a food record (DELETE)
 - Bearer token authentication on all `/api` endpoints
+- **Per-IP Rate Limiting** — 30 requests per 60 seconds per client IP (returns `429 Too Many Requests` when exceeded)
 - JSON responses with appropriate HTTP status codes
 - Prepared SQL statements (protection against SQL injection)
 - Relational MySQL database (many-to-many food-ingredient relationship)
@@ -362,6 +363,31 @@ This API includes the following enhancement beyond the base requirements:
 - **Endpoint Added:** `GET /api/foods/search/{name}`
 - **Security:** Uses prepared statements to prevent SQL injection.
 - **Testing:** Send a GET request with a food name keyword (e.g., `/api/foods/search/adobo`).
+
+---
+
+### 2. Security Feature — Per-IP Rate Limiting
+
+**Description:** All `/api/*` routes are now protected by a sliding-window rate limiter — each client IP is limited to **30 requests per 60 seconds**. Requests over the limit receive `429 Too Many Requests` instead of being processed.
+
+**Purpose:** Reduces the risk of brute-force token guessing and protects the database from being overwhelmed by a runaway client or script.
+
+**Files modified:** `public/index.php` (added `isRateLimited()` function and `$rateLimitMiddleware`, attached to all `/api` routes)
+
+**Implementation notes:** The limiter stores a short list of recent request timestamps per IP in `storage/rate_limit/`, using file locking (`flock`) so concurrent requests don't corrupt the count. This keeps state across requests without needing a database table or an external cache service — appropriate for a single-server student project.
+
+**Rate limit response (HTTP 429):**
+```json
+{
+  "status": "error",
+  "message": "Too many requests. Please wait a moment and try again."
+}
+```
+
+**Testing instructions:**
+1. Send 30 requests to any `/api/*` route (e.g., `/api/categories`) within a minute with a valid token — all should return `200 OK`.
+2. Send a 31st request within the same minute — expect `429 Too Many Requests`.
+3. Wait 60 seconds and try again — requests should succeed again.
 
 ---
 

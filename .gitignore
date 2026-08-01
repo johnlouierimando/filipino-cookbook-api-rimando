@@ -33,3 +33,6 @@ error_log
 # Activity guide documents (instructor materials, not part of the API)
 *.docx
 *.doc
+
+# Rate limiter runtime files — keep the folder, ignore per-IP data files
+/storage/rate_limit/*.json

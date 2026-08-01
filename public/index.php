@@ -66,6 +66,71 @@ function validateToken(Request $request, Response $response): ?Response {
 }
 
 // ─────────────────────────────────────────────
+// Per-IP Rate Limiter
+// Sliding window: 30 requests per 60 seconds.
+// State stored in storage/rate_limit/{ip}.json
+// using flock() so concurrent requests are safe.
+// ─────────────────────────────────────────────
+define('RATE_LIMIT_MAX',    30);
+define('RATE_LIMIT_WINDOW', 60);
+
+function isRateLimited(): bool
+{
+    $ip     = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $safeIp = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $ip);
+    $dir    = __DIR__ . '/../storage/rate_limit/';
+    $file   = $dir . $safeIp . '.json';
+
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+
+    $fp = fopen($file, 'c+');
+    if (!$fp) return false;
+
+    flock($fp, LOCK_EX);
+
+    $now        = time();
+    $contents   = stream_get_contents($fp);
+    $timestamps = $contents ? json_decode($contents, true) : [];
+    if (!is_array($timestamps)) $timestamps = [];
+
+    // Keep only timestamps within the current window
+    $timestamps = array_values(
+        array_filter($timestamps, fn($t) => ($now - $t) < RATE_LIMIT_WINDOW)
+    );
+
+    $limited = count($timestamps) >= RATE_LIMIT_MAX;
+
+    if (!$limited) {
+        $timestamps[] = $now;
+        rewind($fp);
+        ftruncate($fp, 0);
+        fwrite($fp, json_encode($timestamps));
+    }
+
+    flock($fp, LOCK_UN);
+    fclose($fp);
+
+    return $limited;
+}
+
+$rateLimitMiddleware = function (Request $request, $handler): Response {
+    if (isRateLimited()) {
+        $response = new \Slim\Psr7\Response();
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => 'Too many requests. Please wait a moment and try again.',
+        ]));
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Retry-After', (string) RATE_LIMIT_WINDOW)
+            ->withStatus(429);
+    }
+    return $handler->handle($request);
+};
+
+// ─────────────────────────────────────────────
 // Slim App Setup
 // ─────────────────────────────────────────────
 $app = AppFactory::create();
@@ -132,7 +197,8 @@ $app->get('/api/foods', function (Request $request, Response $response) {
         $response->getBody()->write(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
-});
+})
+->add($rateLimitMiddleware);
 
 // ─────────────────────────────────────────────
 // SECURED ROUTE — GET /api/foods/search/{name}
@@ -171,7 +237,8 @@ $app->get('/api/foods/search/{name}', function (Request $request, Response $resp
         $response->getBody()->write(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
-});
+})
+->add($rateLimitMiddleware);
 
 // ─────────────────────────────────────────────
 // SECURED ROUTE — GET /api/foods/{id}
@@ -220,7 +287,8 @@ $app->get('/api/foods/{id}', function (Request $request, Response $response, arr
         $response->getBody()->write(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
-});
+})
+->add($rateLimitMiddleware);
 
 // ─────────────────────────────────────────────
 // SECURED ROUTE — GET /api/categories
@@ -242,7 +310,8 @@ $app->get('/api/categories', function (Request $request, Response $response) {
         $response->getBody()->write(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
-});
+})
+->add($rateLimitMiddleware);
 
 // ─────────────────────────────────────────────
 // SECURED ROUTE — GET /api/ingredients
@@ -264,7 +333,8 @@ $app->get('/api/ingredients', function (Request $request, Response $response) {
         $response->getBody()->write(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
-});
+})
+->add($rateLimitMiddleware);
 
 // ─────────────────────────────────────────────
 // SECURED ROUTE — POST /api/foods
@@ -330,7 +400,8 @@ $app->post('/api/foods', function (Request $request, Response $response) {
         $response->getBody()->write(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
-});
+})
+->add($rateLimitMiddleware);
 
 // ─────────────────────────────────────────────
 // SECURED ROUTE — DELETE /api/foods/{id}
@@ -372,7 +443,8 @@ $app->delete('/api/foods/{id}', function (Request $request, Response $response, 
         $response->getBody()->write(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
-});
+})
+->add($rateLimitMiddleware);
 
 // ─────────────────────────────────────────────
 // Run the app
