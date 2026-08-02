@@ -273,7 +273,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 1. GET `/` — Public Welcome Endpoint
+### 1. GET `/` Public Welcome Endpoint
 
 ![GET / — Welcome message returned with HTTP 200 OK](screenshots/GET_PUBLIC-WELCOME.png)
 
@@ -281,7 +281,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 2. GET `/api/foods` — Retrieve All Foods
+### 2. GET `/api/foods` Retrieve All Foods
 
 ![GET /api/foods — All foods returned with ingredients and HTTP 200 OK](screenshots/GET_FOODS.png)
 
@@ -289,7 +289,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 3. GET `/api/foods/{id}` — Retrieve Food by ID
+### 3. GET `/api/foods/{id}` Retrieve Food by ID
 
 ![GET /api/foods/{id} — Single food record returned with HTTP 200 OK](screenshots/GET_FOOD-ID.png)
 
@@ -297,7 +297,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 4. GET `/api/foods/search/{name}` — Search Foods by Name
+### 4. GET `/api/foods/search/{name}` Search Foods by Name
 
 ![GET /api/foods/search/adobo — Search results returned with HTTP 200 OK](screenshots/GET_SEARCH-ADOBO.png)
 
@@ -305,7 +305,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 5. GET `/api/categories` — Retrieve All Categories
+### 5. GET `/api/categories` Retrieve All Categories
 
 ![GET /api/categories — All categories returned with HTTP 200 OK](screenshots/GET_CATEGORIES.png)
 
@@ -313,7 +313,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 6. GET `/api/ingredients` — Retrieve All Ingredients
+### 6. GET `/api/ingredients` Retrieve All Ingredients
 
 ![GET /api/ingredients — All ingredients returned with HTTP 200 OK](screenshots/GET_INGREDIENTS.png)
 
@@ -321,7 +321,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 7. POST `/api/foods` — Add New Food
+### 7. POST `/api/foods` Add New Food
 
 ![POST /api/foods — New food record created with HTTP 201 Created](screenshots/POST_NEW-FOOD.png)
 
@@ -329,7 +329,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ---
 
-### 8. DELETE `/api/foods/{id}` — Delete Food by ID
+### 8. DELETE `/api/foods/{id}` Delete Food by ID
 
 ![DELETE /api/foods/{id} — Food deleted successfully with HTTP 200 OK](screenshots/DELETE_FOOD-BY-ID.png)
 
@@ -384,7 +384,7 @@ This API includes the following enhancement beyond the base requirements:
 }
 ```
 
-**Screenshot — 429 Too Many Requests:**
+**Screenshot 429 Too Many Requests:**
 
 ![Rate limiter triggered — HTTP 429 Too Many Requests response in Thunder Client](screenshots/RATE_LIMITER.png)
 
