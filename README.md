@@ -362,8 +362,6 @@ This API includes the following enhancement beyond the base requirements:
 **Testing instructions:**
 1. Send 10 requests to any `/api/*` route (e.g., `/api/categories`) within 30 seconds with a valid token all should return `200 OK`.
 2. Send an 11th request within the same 30-second window expect `429 Too Many Requests`.
-3. Wait 30 seconds and try again — requests should succeed again.
+3. Wait 30 seconds and try again requests should succeed again.
 
 ---
-
-*Filipino Cookbook API - Built using PHP + Slim Framework*
