@@ -366,15 +366,15 @@ This API includes the following enhancement beyond the base requirements:
 
 ---
 
-### 2. Security Feature — Per-IP Rate Limiting
+### 2. Security Feature Per-IP Rate Limiting
 
-**Description:** All `/api/*` routes are now protected by a sliding-window rate limiter — each client IP is limited to **30 requests per 60 seconds**. Requests over the limit receive `429 Too Many Requests` instead of being processed.
+**Description:** All `/api/*` routes are now protected by a sliding-window rate limiter each client IP is limited to **30 requests per 60 seconds**. Requests over the limit receive `429 Too Many Requests` instead of being processed.
 
 **Purpose:** Reduces the risk of brute-force token guessing and protects the database from being overwhelmed by a runaway client or script.
 
 **Files modified:** `public/index.php` (added `isRateLimited()` function and `$rateLimitMiddleware`, attached to all `/api` routes)
 
-**Implementation notes:** The limiter stores a short list of recent request timestamps per IP in `storage/rate_limit/`, using file locking (`flock`) so concurrent requests don't corrupt the count. This keeps state across requests without needing a database table or an external cache service — appropriate for a single-server student project.
+**Implementation notes:** The limiter stores a short list of recent request timestamps per IP in `storage/rate_limit/`, using file locking (`flock`) so concurrent requests don't corrupt the count. This keeps state across requests without needing a database table or an external cache service appropriate for a single-server student project.
 
 **Rate limit response (HTTP 429):**
 ```json
@@ -387,7 +387,7 @@ This API includes the following enhancement beyond the base requirements:
 **Testing instructions:**
 1. Send 30 requests to any `/api/*` route (e.g., `/api/categories`) within a minute with a valid token — all should return `200 OK`.
 2. Send a 31st request within the same minute — expect `429 Too Many Requests`.
-3. Wait 60 seconds and try again — requests should succeed again.
+3. Wait 60 seconds and try again requests should succeed again.
 
 ---
 
