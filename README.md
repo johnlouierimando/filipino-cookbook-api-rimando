@@ -44,7 +44,7 @@ The **Filipino Cookbook API** is a token-secured REST API that exposes a curated
 - Add a new Filipino food record (POST)
 - Delete a food record (DELETE)
 - Bearer token authentication on all `/api` endpoints
-- **Per-IP Rate Limiting** — 30 requests per 60 seconds per client IP (returns `429 Too Many Requests` when exceeded)
+- **Per-IP Rate Limiting** — 10 requests per 30 seconds per client IP (returns `429 Too Many Requests` when exceeded)
 - JSON responses with appropriate HTTP status codes
 - Prepared SQL statements (protection against SQL injection)
 - Relational MySQL database (many-to-many food-ingredient relationship)
@@ -368,7 +368,7 @@ This API includes the following enhancement beyond the base requirements:
 
 ### 2. Security Feature — Per-IP Rate Limiting
 
-**Description:** All `/api/*` routes are now protected by a sliding-window rate limiter — each client IP is limited to **30 requests per 60 seconds**. Requests over the limit receive `429 Too Many Requests` instead of being processed.
+**Description:** All `/api/*` routes are now protected by a sliding-window rate limiter — each client IP is limited to **10 requests per 30 seconds**. Requests over the limit receive `429 Too Many Requests` instead of being processed.
 
 **Purpose:** Reduces the risk of brute-force token guessing and protects the database from being overwhelmed by a runaway client or script.
 
@@ -384,10 +384,14 @@ This API includes the following enhancement beyond the base requirements:
 }
 ```
 
+**Screenshot — 429 Too Many Requests:**
+
+![Rate limiter triggered — HTTP 429 Too Many Requests response in Thunder Client](screenshots/RATE_LIMITER.png)
+
 **Testing instructions:**
-1. Send 30 requests to any `/api/*` route (e.g., `/api/categories`) within a minute with a valid token — all should return `200 OK`.
-2. Send a 31st request within the same minute — expect `429 Too Many Requests`.
-3. Wait 60 seconds and try again — requests should succeed again.
+1. Send 10 requests to any `/api/*` route (e.g., `/api/categories`) within 30 seconds with a valid token — all should return `200 OK`.
+2. Send an 11th request within the same 30-second window — expect `429 Too Many Requests`.
+3. Wait 30 seconds and try again — requests should succeed again.
 
 ---
 

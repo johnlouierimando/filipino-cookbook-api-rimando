@@ -67,12 +67,12 @@ function validateToken(Request $request, Response $response): ?Response {
 
 // ─────────────────────────────────────────────
 // Per-IP Rate Limiter
-// Sliding window: 30 requests per 60 seconds.
+// Sliding window: 10 requests per 30 seconds.
 // State stored in storage/rate_limit/{ip}.json
 // using flock() so concurrent requests are safe.
 // ─────────────────────────────────────────────
-define('RATE_LIMIT_MAX',    30);
-define('RATE_LIMIT_WINDOW', 60);
+define('RATE_LIMIT_MAX',    10);
+define('RATE_LIMIT_WINDOW', 30);
 
 function isRateLimited(): bool
 {
