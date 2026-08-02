@@ -277,15 +277,11 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ![GET / — Welcome message returned with HTTP 200 OK](screenshots/GET_PUBLIC-WELCOME.png)
 
-*Public welcome route returns a JSON message confirming the API is running. No token required.*
-
 ---
 
 ### 2. GET `/api/foods` Retrieve All Foods
 
 ![GET /api/foods — All foods returned with ingredients and HTTP 200 OK](screenshots/GET_FOODS.png)
-
-*Returns the full list of Filipino foods with category, origin, instructions, and ingredients. Bearer token required.*
 
 ---
 
@@ -293,15 +289,11 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ![GET /api/foods/{id} — Single food record returned with HTTP 200 OK](screenshots/GET_FOOD-ID.png)
 
-*Returns the full details and ingredient list for a specific food identified by its ID.*
-
 ---
 
 ### 4. GET `/api/foods/search/{name}` Search Foods by Name
 
 ![GET /api/foods/search/adobo — Search results returned with HTTP 200 OK](screenshots/GET_SEARCH-ADOBO.png)
-
-*Partial-match search returns all foods whose name contains the search keyword.*
 
 ---
 
@@ -309,15 +301,11 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ![GET /api/categories — All categories returned with HTTP 200 OK](screenshots/GET_CATEGORIES.png)
 
-*Returns all food categories stored in the database.*
-
 ---
 
 ### 6. GET `/api/ingredients` Retrieve All Ingredients
 
 ![GET /api/ingredients — All ingredients returned with HTTP 200 OK](screenshots/GET_INGREDIENTS.png)
-
-*Returns the complete alphabetically sorted list of all ingredients.*
 
 ---
 
@@ -325,15 +313,11 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ![POST /api/foods — New food record created with HTTP 201 Created](screenshots/POST_NEW-FOOD.png)
 
-*Creates a new food record. Requires a JSON body with food_name, category_id, origin_id, and instructions.*
-
 ---
 
 ### 8. DELETE `/api/foods/{id}` Delete Food by ID
 
 ![DELETE /api/foods/{id} — Food deleted successfully with HTTP 200 OK](screenshots/DELETE_FOOD-BY-ID.png)
-
-*Permanently removes a food record and its associated ingredient links from the database.*
 
 ---
 
@@ -353,20 +337,7 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 This API includes the following enhancement beyond the base requirements:
 
-### Search Endpoint
-
-**Endpoint:** `GET /api/foods/search/{name}`
-
-- **Description:** Performs a partial-match search on food names using SQL `LIKE`.
-- **Purpose:** Allows users to find foods without knowing the exact full name.
-- **Files Modified:** `public/index.php`
-- **Endpoint Added:** `GET /api/foods/search/{name}`
-- **Security:** Uses prepared statements to prevent SQL injection.
-- **Testing:** Send a GET request with a food name keyword (e.g., `/api/foods/search/adobo`).
-
----
-
-### 2. Security Feature — Per-IP Rate Limiting
+### Security Feature Per-IP Rate Limiting
 
 **Description:** All `/api/*` routes are now protected by a sliding-window rate limiter — each client IP is limited to **10 requests per 30 seconds**. Requests over the limit receive `429 Too Many Requests` instead of being processed.
 
@@ -389,8 +360,8 @@ This API includes the following enhancement beyond the base requirements:
 ![Rate limiter triggered — HTTP 429 Too Many Requests response in Thunder Client](screenshots/RATE_LIMITER.png)
 
 **Testing instructions:**
-1. Send 10 requests to any `/api/*` route (e.g., `/api/categories`) within 30 seconds with a valid token — all should return `200 OK`.
-2. Send an 11th request within the same 30-second window — expect `429 Too Many Requests`.
+1. Send 10 requests to any `/api/*` route (e.g., `/api/categories`) within 30 seconds with a valid token all should return `200 OK`.
+2. Send an 11th request within the same 30-second window expect `429 Too Many Requests`.
 3. Wait 30 seconds and try again — requests should succeed again.
 
 ---
