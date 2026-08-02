@@ -1,6 +1,6 @@
 # Filipino Cookbook API
 
-A RESTful API for Filipino cuisine built with **PHP**, the **Slim Framework**, and **MySQL**. This API provides structured data about traditional Filipino foods, their ingredients, categories, and regional origins — secured with Bearer token authentication.
+A RESTful API for Filipino cuisine built with **PHP**, the **Slim Framework**, and **MySQL**. This API provides structured data about traditional Filipino foods, their ingredients, categories, and regional origins secured with Bearer token authentication.
 
 ---
 
