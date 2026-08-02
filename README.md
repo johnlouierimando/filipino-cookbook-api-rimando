@@ -335,8 +335,6 @@ All endpoints were tested using **Thunder Client** in Visual Studio Code with Be
 
 ## Optional API Enhancements
 
-This API includes the following enhancement beyond the base requirements:
-
 ### Security Feature Per-IP Rate Limiting
 
 **Description:** All `/api/*` routes are now protected by a sliding-window rate limiter each client IP is limited to **10 requests per 30 seconds**. Requests over the limit receive `429 Too Many Requests` instead of being processed.
