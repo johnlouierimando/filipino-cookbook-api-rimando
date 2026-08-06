@@ -76,12 +76,16 @@ filipino-cookbook-api/
 │   └── filipino_foods_relational.sql   # SQL schema and seed data
 ├── public/
 │   ├── .htaccess                        # Apache URL rewriting rules
-│   └── index.php                        # Application entry point and all routes
+│   └── index.php                        # Application entry point, routes, and rate limiter
+├── storage/
+│   └── rate_limit/                      # Per-IP rate limit state files (auto-created at runtime)
+│       └── .gitkeep                     # Keeps directory tracked by Git
 ├── vendor/                              # Composer dependencies (not committed)
 ├── .gitignore                           # Git ignore rules
 ├── composer.json                        # Composer configuration
 ├── composer.lock                        # Locked dependency versions
 ├── config.example.php                   # Example configuration (safe to commit)
+├── config.php                           # Local DB credentials (excluded from Git)
 ├── API_DOCUMENTATION.md                 # Full API reference documentation
 └── README.md                            # This file
 ```
